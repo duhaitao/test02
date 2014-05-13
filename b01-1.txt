@@ -1,1 +1,7 @@
-b01-1
+1222             pCach->m_BestQuot.TID = 1; // flat
+1223             if ((*last)->m_Bidprice - (*first)->m_Askprice >= 1) {
+1224                 pCach->m_BestQuot.TID = 2; // up
+1225             } else if ((*last)->m_Askprice - (*first)->m_Bidprice <= -1) {
+1226                 pCach->m_BestQuot.TID = 0; // down
+1227             }
+

@@ -3,6 +3,10 @@
 use strict;
 
 while (<>) {
+	if (!/^b/) {
+		next;
+	}
+
 	#print $_;
 	my @a = split /,|;/;
 
@@ -53,6 +57,16 @@ while (<>) {
 	}
 	#printf ("$GenTime, $hour, $min, $sec, $msec\n");
 	my $ContractID = $a[1];
+
+	if (!($ContractID =~ /j\d{4}/)) {
+		next;
+	}	
+
+	if ($ContractID ne "j1305" && $ContractID ne "j1309" && 
+		$ContractID ne "j1401" && $ContractID ne "j1405") {
+		next;
+	}
+
 	my $LastPrice = $a[4];
 	my $MatchTotQty = $a[7];
 	my $OpenInterest = $a[11];
@@ -64,32 +78,23 @@ while (<>) {
 	my $Buy1OrderPrice = $a[30];
 	my $Buy1OrderQty = $a[31];
 	my $Buy2OrderPrice = $a[34];
-	$Buy2OrderPrice =~ s/\|//;
 	my $Buy2OrderQty = $a[35];
 	my $Buy3OrderPrice = $a[38];
-	$Buy3OrderPrice =~ s/\|//;
 	my $Buy3OrderQty = $a[39];
 	my $Buy4OrderPrice = $a[42];
-	$Buy4OrderPrice =~ s/\|//;
 	my $Buy4OrderQty = $a[43];
 	my $Buy5OrderPrice = $a[46];
-	$Buy5OrderPrice =~ s/\|//;
 	my $Buy5OrderQty = $a[47];
 	
 	my $Sell1OrderPrice = $a[50];
-	$Sell1OrderPrice =~ s/\|//;
 	my $Sell1OrderQty = $a[51];
 	my $Sell2OrderPrice = $a[54];
-	$Sell2OrderPrice =~ s/\|//;
 	my $Sell2OrderQty = $a[55];
 	my $Sell3OrderPrice = $a[58];
-	$Sell3OrderPrice =~ s/\|//;
 	my $Sell3OrderQty = $a[59];
 	my $Sell4OrderPrice = $a[62];
-	$Sell4OrderPrice =~ s/\|//;
 	my $Sell4OrderQty = $a[63];
 	my $Sell5OrderPrice = $a[66];
-	$Sell5OrderPrice =~ s/\|//;
 	my $Sell5OrderQty = $a[67];
 
 	if (!defined ($Buy1OrderPrice)) {
@@ -162,6 +167,17 @@ while (<>) {
 		$Sell5OrderQty = 0;
 	}
 
+	$Buy2OrderPrice =~ s/\|//;
+	$Buy3OrderPrice =~ s/\|//;
+	$Buy4OrderPrice =~ s/\|//;
+	$Buy5OrderPrice =~ s/\|//;
+
+	$Sell1OrderPrice =~ s/\|//;
+	$Sell2OrderPrice =~ s/\|//;
+	$Sell3OrderPrice =~ s/\|//;
+	$Sell4OrderPrice =~ s/\|//;
+	$Sell5OrderPrice =~ s/\|//;
+
 	print $hour . ":" . $min . ":" . $sec . ".". $msec . ", " . 
 	#print $GenTime . ",".
 		$ContractID . ", " .
@@ -194,5 +210,4 @@ while (<>) {
 		$Sell4OrderQty . ", " .
 		$Sell5OrderPrice . ", " .
 		$Sell5OrderQty . "\n";
-
 }

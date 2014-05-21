@@ -3,7 +3,7 @@
 use strict;
 
 while (<>) {
-	if (!/^b/) {
+	if (!/^b.+j1\d{3}/) {
 		next;
 	}
 
@@ -15,9 +15,11 @@ while (<>) {
 	shift @a;
 
 	my $line;
-	foreach (@a) {
-		$line .= $_ . ",";
-	}
+	$line = join ",", @a;
+
+#	foreach (@a) {
+#		$line .= $_ . ",";
+#	}
 
 	#print $line . $last;
 
@@ -32,9 +34,9 @@ while (<>) {
 
 	my $ContractID = $a[1];
 
-	if (!($ContractID =~ /j\d{4}/)) {
-		next;
-	}	
+	#if (!($ContractID =~ /j\d{4}/)) {
+	#	next;
+	#}	
 
 	if ($ContractID ne "j1305" && $ContractID ne "j1309" && 
 		$ContractID ne "j1401" && $ContractID ne "j1405") {

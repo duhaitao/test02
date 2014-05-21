@@ -36,12 +36,16 @@ while (<>) {
 		next;
 	}	
 
+	if ($ContractID ne "j1305" && $ContractID ne "j1309" && 
+		$ContractID ne "j1401" && $ContractID ne "j1405") {
+		next;
+	}
+
 	chomp $last;
 	my $GenTime = $last;
 	
 	my ($secs, $msec) = split /\./, $GenTime;
 	
-
 	my $sec_left = $secs % 86400;
 	my $hour = int ($sec_left / 3600) + 8;
 	my $min  = int (($sec_left - ($hour - 8) * 3600) / 60);
@@ -62,10 +66,6 @@ while (<>) {
 		$sec = "0" . $sec;
 	}
 	#printf ("$GenTime, $hour, $min, $sec, $msec\n");
-	if ($ContractID ne "j1305" && $ContractID ne "j1309" && 
-		$ContractID ne "j1401" && $ContractID ne "j1405") {
-		next;
-	}
 
 	my $LastPrice = $a[4];
 	my $MatchTotQty = $a[8];
@@ -178,33 +178,5 @@ while (<>) {
 	$Sell4OrderPrice =~ s/\|//;
 	$Sell5OrderPrice =~ s/\|//;
 
-	print 
-		$ContractID . "," .         # 0
-		$hour . ":" . $min . ":" . $sec . ".". $msec . "," .  # 1
-		$LastPrice . "," .          # 2
-		$MatchTotQty . "," .        # 3
-		$OpenInterest . "," .       # 4 
-
-		$Buy5OrderPrice . "," .      # 5 
-		$Buy5OrderQty . "," .        # 6
-		$Buy4OrderPrice  . "," .     # 7
-		$Buy4OrderQty . "," .        # 8
-		$Buy3OrderPrice  . "," .     # 9
-		$Buy3OrderQty . "," .        # 10
-		$Buy2OrderPrice . "," .      # 11
-		$Buy2OrderQty . "," .        # 12
-		$Buy1OrderPrice . "," .      # 13
-		$Buy1OrderQty  . "," .       # 14
-
-
-		$Sell1OrderPrice . "," .     # 15
-		$Sell1OrderQty . "," .       # 16
-		$Sell2OrderPrice . "," .     # 17 
-		$Sell2OrderQty . "," .       # 18
-		$Sell3OrderPrice . "," .     # 19
-		$Sell3OrderQty . "," .       # 20
-		$Sell4OrderPrice . "," .     # 21
-		$Sell4OrderQty . "," .       # 22
-		$Sell5OrderPrice . "," .     # 23
-		$Sell5OrderQty . "\n";       # 24
+	printf ("$ContractID,$hour:$min:$sec.$msec,$LastPrice,$MatchTotQty,$OpenInterest,$Buy5OrderPrice,$Buy5OrderQty,$Buy4OrderPrice,$Buy4OrderQty,$Buy3OrderPrice,$Buy3OrderQty,$Buy2OrderPrice,$Buy2OrderQty,$Buy1OrderPrice,$Buy1OrderQty,$Sell1OrderPrice,$Sell1OrderQty,$Sell2OrderPrice,$Sell2OrderQty,$Sell3OrderPrice,$Sell3OrderQty,$Sell4OrderPrice,$Sell4OrderQty,$Sell5OrderPrice,$Sell5OrderQty\n"); 
 }

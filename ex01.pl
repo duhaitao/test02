@@ -51,6 +51,15 @@ while (<>) {
 	my $min  = int (($sec_left - ($hour - 8) * 3600) / 60);
 	my $sec =  int ($sec_left - ($hour - 8) * 3600 - $min * 60);
 
+	if ($hour < 8 || $hour > 15) {
+		printf "$hour\n";
+		next;
+	}
+
+	if ($hour == 8 && $min < 55) {
+		next;
+	}
+
 	if ($hour < 1) {
 		$hour = "00";
 	}

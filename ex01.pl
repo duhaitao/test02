@@ -30,6 +30,12 @@ while (<>) {
 
 	#print $a[1] . ", ". $last . ", " . 
 
+	my $ContractID = $a[1];
+
+	if (!($ContractID =~ /j\d{4}/)) {
+		next;
+	}	
+
 	chomp $last;
 	my $GenTime = $last;
 	
@@ -56,19 +62,13 @@ while (<>) {
 		$sec = "0" . $sec;
 	}
 	#printf ("$GenTime, $hour, $min, $sec, $msec\n");
-	my $ContractID = $a[1];
-
-	if (!($ContractID =~ /j\d{4}/)) {
-		next;
-	}	
-
 	if ($ContractID ne "j1305" && $ContractID ne "j1309" && 
 		$ContractID ne "j1401" && $ContractID ne "j1405") {
 		next;
 	}
 
 	my $LastPrice = $a[4];
-	my $MatchTotQty = $a[7];
+	my $MatchTotQty = $a[8];
 	my $OpenInterest = $a[11];
 	my $BidPrice  = $a[20];
 	my $BidQty    = $a[21];
@@ -178,36 +178,33 @@ while (<>) {
 	$Sell4OrderPrice =~ s/\|//;
 	$Sell5OrderPrice =~ s/\|//;
 
-	print $hour . ":" . $min . ":" . $sec . ".". $msec . ", " . 
-	#print $GenTime . ",".
-		$ContractID . ", " .
-		$LastPrice . ", " .
-		$MatchTotQty . ", " .
-		$OpenInterest . ", " .
-		$BidPrice . ", " .
-		$BidQty  . ", " .
-		$AskPrice . ", " .
-		$AskQty . ", " .
+	print 
+		$ContractID . "," .         # 0
+		$hour . ":" . $min . ":" . $sec . ".". $msec . "," .  # 1
+		$LastPrice . "," .          # 2
+		$MatchTotQty . "," .        # 3
+		$OpenInterest . "," .       # 4 
 
-		$Buy1OrderPrice . ", " .
-		$Buy1OrderQty . ", " .
-		$Buy2OrderPrice . ", " .
-		$Buy2OrderQty . ", " .
-		$Buy3OrderPrice  . ", " .
-		$Buy3OrderQty . ", " .
-		$Buy4OrderPrice  . ", " .
-		$Buy4OrderQty . ", " .
-		$Buy5OrderPrice . ", " .
-		$Buy5OrderQty . ", " .
+		$Buy5OrderPrice . "," .      # 5 
+		$Buy5OrderQty . "," .        # 6
+		$Buy4OrderPrice  . "," .     # 7
+		$Buy4OrderQty . "," .        # 8
+		$Buy3OrderPrice  . "," .     # 9
+		$Buy3OrderQty . "," .        # 10
+		$Buy2OrderPrice . "," .      # 11
+		$Buy2OrderQty . "," .        # 12
+		$Buy1OrderPrice . "," .      # 13
+		$Buy1OrderQty  . "," .       # 14
 
-		$Sell1OrderPrice . ", " .
-		$Sell1OrderQty . ", " .
-		$Sell2OrderPrice . ", " .
-		$Sell2OrderQty . ", " .
-		$Sell3OrderPrice . ", " .
-		$Sell3OrderQty . ", " .
-		$Sell4OrderPrice . ", " .
-		$Sell4OrderQty . ", " .
-		$Sell5OrderPrice . ", " .
-		$Sell5OrderQty . "\n";
+
+		$Sell1OrderPrice . "," .     # 15
+		$Sell1OrderQty . "," .       # 16
+		$Sell2OrderPrice . "," .     # 17 
+		$Sell2OrderQty . "," .       # 18
+		$Sell3OrderPrice . "," .     # 19
+		$Sell3OrderQty . "," .       # 20
+		$Sell4OrderPrice . "," .     # 21
+		$Sell4OrderQty . "," .       # 22
+		$Sell5OrderPrice . "," .     # 23
+		$Sell5OrderQty . "\n";       # 24
 }

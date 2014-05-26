@@ -24,7 +24,7 @@ foreach (@csvfiles) {
 	#open OUTFILE, ">$ARGV[0]/$_.$ARGV[1].out" || die "create $_.$ARGV[1].out error\n";
 	open OUTFILE, ">$_.$ARGV[1].out" || die "create $_.$ARGV[1].out error\n";
 	while (<FILE>) {
-		if (!/^b.+j1\d{3}/) {
+		if (!/^b/) {
 			next;
 		}
 		#if (/j1305/) {

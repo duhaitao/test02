@@ -90,11 +90,11 @@ for ($i = 0; $i < $TC; ++$i) {
 	$orig_index_begin += $N;
 
 	if ($TCClass == 1) {
-		$outfile = "$InputDir/TestCase$TC-$tmp1-$tmp2-Up.csv";
+		$outfile = "$InputDir/TestCase$TC-$tmp1-$tmp2-Up.txt";
 	} elsif ($TCClass == 2) {
-		$outfile = "$InputDir/TestCase$TC-$tmp1-$tmp2-Down.csv";
+		$outfile = "$InputDir/TestCase$TC-$tmp1-$tmp2-Down.txt";
 	} else {
-		$outfile = "$InputDir/TestCase$TC-$tmp1-$tmp2-Flat.csv";
+		$outfile = "$InputDir/TestCase$TC-$tmp1-$tmp2-Flat.txt";
 	}
 
 	# 先检查是否已经存在，如果存在不用再生成

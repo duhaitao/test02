@@ -20,6 +20,6 @@ my $txtfiles = `echo $InputDir/*.arff`;
 my @txtfile_array = split $txtfiles;
 
 foreach (@txtfile_array) {
-	printf ("Modeling WekaCostSensitiveClassifierAndRandomForest $_ \n");
-	`Modeling WekaFeatureSelection $_ $_.arff`;
+	printf ("Modeling WekaCSCRFBuildModel $_ \n");
+	`Modeling WekaCSCRFBuildModel $_ $_.arff`;
 }

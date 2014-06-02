@@ -14,13 +14,12 @@ if ($arglen != 1) {
 
 my $InputDir = $ARGV[0];
 
-# csv文件合并后，生成文件的扩展名是.txt，需要遍历一下，对
-# 每个txt文件进行特征值选择
+# csv文件合并后，生成文件的扩展名是.arff，需要遍历一下，
 
-my $txtfiles = `echo $InputDir/*.txt`;
+my $txtfiles = `echo $InputDir/*.arff`;
 my @txtfile_array = split $txtfiles;
 
 foreach (@txtfile_array) {
-	printf ("Modeling WekaFeatureSelection $_ $_.AFS.arff\n");
-	`Modeling WekaFeatureSelection $_ $_.AFS.arff`;
+	printf ("Modeling WekaCostSensitiveClassifierAndRandomForest $_ \n");
+	`Modeling WekaFeatureSelection $_ $_.arff`;
 }

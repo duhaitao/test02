@@ -13,15 +13,15 @@ if ($arglen != 1) {
 }
 
 # 设置参数，数组中的参数使用逗号分隔，跟C语言一样
-my @CostMetrix11 = ();
-my @CostMetrix12 = ();
-my @CostMetrix21 = ();
-my @CostMetrix22 = ();
-my @NumberOfTrees = ();
-my @NumberOfFeatures = ();
-my @SeedForRandomNumberGenerator = ();
-my @MaximumDepthOfTrees = ();
-my @NumberOfExecutionSlots = ();
+my @CostMetrix11 = (1,2 );
+my @CostMetrix12 = (2);
+my @CostMetrix21 = (1,23,3);
+my @CostMetrix22 = (11);
+my @NumberOfTrees = (10);
+my @NumberOfFeatures = (18);
+my @SeedForRandomNumberGenerator = (1121);
+my @MaximumDepthOfTrees = (23);
+my @NumberOfExecutionSlots = (10);
 
 my $CostMetrix11_len = @CostMetrix11;
 my $CostMetrix12_len = @CostMetrix12;
@@ -42,7 +42,7 @@ my $LogName;
 my $InputDir = $ARGV[0];
 
 my $txtfiles = `echo $InputDir/*.arff`;
-my @txtfile_array = split $txtfiles;
+my @txtfile_array = split /\s+/, $txtfiles;
 
 foreach (@txtfile_array) {
 	$TrainDataFileName = $_;
@@ -61,7 +61,8 @@ foreach (@txtfile_array) {
 							for ($i7 = 0; $i7 < $SeedForRandomNumberGenerator_len; ++$i7) {
 								for ($i8 = 0; $i8 < $MaximumDepthOfTrees_len; ++$i8) {
 									for ($i9 = 0; $i9 < $NumberOfExecutionSlots_len; ++$i9) {
-										`Modeling WekaCSCRFBuildModel $CostMetrix11[$i1] $CostMetrix12[$i2] $CostMetrix21[$i3] $CostMetrix22[$i4] $NumberOfTrees[$i5] $NumberOfFeatures[$i6] $SeedForRandomNumberGenerator[$i7] $MaximumDepthOfTrees[$i8] $NumberOfExecutionSlots[$i9]`;
+									#	printf ("Modeling WekaCSCRFBuildModel $CostMetrix11[$i1] $CostMetrix12[$i2] $CostMetrix21[$i3] $CostMetrix22[$i4] $TrainDataFileName $ModelName $LogName $NumberOfTrees[$i5] $NumberOfFeatures[$i6] $SeedForRandomNumberGenerator[$i7] $MaximumDepthOfTrees[$i8] $NumberOfExecutionSlots[$i9]\n");
+										`Modeling WekaCSCRFBuildModel $CostMetrix11[$i1] $CostMetrix12[$i2] $CostMetrix21[$i3] $CostMetrix22[$i4] $TrainDataFileName $ModelName $LogName $NumberOfTrees[$i5] $NumberOfFeatures[$i6] $SeedForRandomNumberGenerator[$i7] $MaximumDepthOfTrees[$i8] $NumberOfExecutionSlots[$i9]`;
 									}
 								}
 							}

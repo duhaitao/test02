@@ -18,7 +18,7 @@ my $InputDir = $ARGV[0];
 # 每个txt文件进行特征值选择
 
 my $txtfiles = `echo $InputDir/*.txt`;
-my @txtfile_array = split $txtfiles;
+my @txtfile_array = split /\s+/, $txtfiles;
 
 foreach (@txtfile_array) {
 	printf ("Modeling WekaFeatureSelection $_ $_.AFS.arff\n");

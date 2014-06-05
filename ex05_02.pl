@@ -22,5 +22,13 @@ my @txtfile_array = split /\s+/, $txtfiles;
 
 foreach (@txtfile_array) {
 	printf ("Modeling WekaFeatureSelection $_ $_.AFS.arff\n");
-	`Modeling WekaFeatureSelection $_ $_.AFS.arff`;
+	`./Modeling WekaFeatureSelection $_ $_.AFS.arff`;
+	# 清除临时文件
+	my $tmpfiles = `echo /tmp/0.*.tmp`;
+	my @tmpfile_array = split /\s+/, $tmpfiles;
+
+	foreach (@tmpfile_array) {
+		# fuser 如果检测到没有进程正在使用tmp文件，将失败，因此可以删除
+		`fuser $_ || (echo "rm -f $_"; rm -f $_)`; 
+	}
 }

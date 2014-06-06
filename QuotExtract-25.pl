@@ -24,22 +24,11 @@ foreach (@csvfiles) {
 	#open OUTFILE, ">$ARGV[0]/$_.$ARGV[1].out" || die "create $_.$ARGV[1].out error\n";
 	open OUTFILE, ">$_.$ARGV[1].out" || die "create $_.$ARGV[1].out error\n";
 	while (<FILE>) {
-		if (!/^b/) {
+		if (!/^b.+,$ARGV[1],/) {
 			next;
 		}
-		#if (/j1305/) {
-		#print $_;
-		#}
-
-		#if (!/j1305|j1309|j1401|j1405/) {
-		if (!/$ARGV[1]/) {
-			next;
-		}
-
-		print OUTFILE $_;
 
 		my @base_array = split /;/;
-		my $base = $base_array[1];
 		my $level2Quot = $base_array[2];
 		my @a = split /,|;/;
 
@@ -50,84 +39,15 @@ foreach (@csvfiles) {
 		my $line;
 		$line = join ",", @a;
 
-	#	foreach (@a) {
-	#		$line .= $_ . ",";
-	#	}
-
-		#print $line . $last;
-
 	#交易日期,合约号, 事务编号, 合约名称, 最新价, 5最高价, 最低价, 最新成交量, 成交量, 成交额, 10初始持仓量, 持仓量, 持仓量变化, 今结算价, 历史最低价, 15历史最高价, 涨停板, 跌停板, 上日结算价, 上日收盘价, 20最高买, 申买量, 申买推导量, 最低卖, 申卖量, 25申卖推导量, 当日均价, 生成时间, 开盘价, 29收盘价;      30 价格,委托量,推导量,买卖标志,生成时间|价格,委托量,推导量,买卖标志, 生成时间|……|价格,委托量,推导量,买卖标志,生成时间;;本地时间戳
 
 		@a = split  /,/, $line;
-		#print @a;
-		#print "\n";
-		#next;
-
-		#print $a[1] . ", ". $last . ", " . 
 
 		my $ContractID = $a[1];
-
-		#if (!($ContractID =~ /j\d{4}/)) {
-		#	next;
-		#}	
-
-		#if ($ContractID ne "j1305" && $ContractID ne "j1309" && 
-		#	$ContractID ne "j1401" && $ContractID ne "j1405") {
-		#	next;
-		#}
-
-		chomp $last;
-		my $GenTime = $last;
-		
-		my ($secs, $msec) = split /\./, $GenTime;
-		
-		my $sec_left = $secs % 86400;
-		my $hour = int ($sec_left / 3600) + 8;
-		my $min  = int (($sec_left - ($hour - 8) * 3600) / 60);
-		my $sec =  int ($sec_left - ($hour - 8) * 3600 - $min * 60);
-
-		if ($hour < 8 || $hour > 15) {
-			printf "$hour\n";
-			next;
-		}
-
-		if ($hour == 8 && $min < 55) {
-			next;
-		}
-
-		if ($hour == 15) {
-			if ($min > 0) {
-				next;
-			}
-
-			if ($sec > 0) {
-				next;
-			}
-		}
-
-		if ($hour < 1) {
-			$hour = "00";
-		}
-		if ($hour < 10) {
-			$hour = "0" . $hour;
-		}
-
-		if ($min < 10) {
-			$min = "0" . $min;
-		}
-
-		if ($sec < 10) {
-			$sec = "0" . $sec;
-		}
-		#printf ("$GenTime, $hour, $min, $sec, $msec\n");
-
-		#my $LastPrice = $a[4];
-		#my $MatchTotQty = $a[8];
-		#my $OpenInterest = $a[11];
-		#my $BidPrice  = $a[20];
-		#my $BidQty    = $a[21];
-		#my $AskPrice  = $a[23];
-		#my $AskQty    = $a[24];
+		my $LastPrice = $a[4];
+		my $MatchTotQty = $a[8];
+		my $OpenInterest = $a[11];
+		my $GenTime = $a[27];
 
 		my @level2Quot_array = split /\|/, $level2Quot;
 	
@@ -253,14 +173,7 @@ foreach (@csvfiles) {
 		#$Sell4OrderPrice =~ s/\|//;
 		#$Sell5OrderPrice =~ s/\|//;
 		
-		my ($a1, $a2, $a3, $a4, @base_array2) = split /,/, $base;
-		$base = $a1 . "," . $a2 . ",". $a3 . "," . "" . ",";
-		foreach (@base_array2) {
-			$base .= $_ . ",";
-		}
-
-		chop $base;
-		printf (OUTFILE "$base,$Buy5OrderPrice,$Buy5OrderQty,$Buy4OrderPrice,$Buy4OrderQty,$Buy3OrderPrice,$Buy3OrderQty,$Buy2OrderPrice,$Buy2OrderQty,$Buy1OrderPrice,$Buy1OrderQty,$Sell1OrderPrice,$Sell1OrderQty,$Sell2OrderPrice,$Sell2OrderQty,$Sell3OrderPrice,$Sell3OrderQty,$Sell4OrderPrice,$Sell4OrderQty,$Sell5OrderPrice,$Sell5OrderQty,$hour:$min:$sec.$msec\n"); 
+		printf (OUTFILE "$ContractID,$GenTime,$LastPrice,$MatchTotQty,$OpenInterest,$Buy5OrderPrice,$Buy5OrderQty,$Buy4OrderPrice,$Buy4OrderQty,$Buy3OrderPrice,$Buy3OrderQty,$Buy2OrderPrice,$Buy2OrderQty,$Buy1OrderPrice,$Buy1OrderQty,$Sell1OrderPrice,$Sell1OrderQty,$Sell2OrderPrice,$Sell2OrderQty,$Sell3OrderPrice,$Sell3OrderQty,$Sell4OrderPrice,$Sell4OrderQty,$Sell5OrderPrice,$Sell5OrderQty\n"); 
 	} #end while
 
 	close OUTFILE;

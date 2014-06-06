@@ -65,8 +65,21 @@ if ($TCClass == 1) {
 	@origin_csv_array = split /\s/, $origin_csv_files;
 }
 
-# 排序，理论上文件系统已经排过了，这一步可以省略
-my @sorted_origin_csv_array = sort @origin_csv_array;
+# 按照文件名中的日期排序，而不是文件名称
+my @sorted_origin_csv_array;
+my %csv_hash;
+my @date_array;
+foreach (@origin_csv_array) {
+	if (/_(\d{8})\./) {
+		$csv_hash{$1} = $_;
+		push @date_array, $1;
+	}	
+}
+
+my @sorted_date_array = sort @date_array;
+foreach (@sorted_date_array) {
+	push @sorted_origin_csv_array, $csv_hash{$_};
+}
 
 my $csv_count = @sorted_origin_csv_array;
 # 进行一下合理性检查，看看是否输入参数超过csv文件个数

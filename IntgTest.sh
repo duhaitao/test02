@@ -51,50 +51,62 @@ echo "如果想并行运行测试的话，可以Up|Down|Flat之一，然后再�
 		break;
 	done
 
+	echo "请选择Model类型"
+	select ModelType in "CSCRF" "MCRF"
+	do
+		break;
+	done
+
+	echo "选择矩阵类型: C11代表C11进行变化，其他类似"
+	select MatrixType in "C11" "C12" "C21" "C22"
+	do
+		break;
+	done
+
 	case $TCClass in
 		"Up" )			
 			./CSVMerge.pl ../data $TC 1 $M $N 1
 			./FeatureSelection.pl ../data/Up/
-			./CSCRFBuildModel.pl ../data/Up/;;
+			./${ModelType}BuildModel.pl ../data/Up/ $MatrixType;;
 		"Down")			
 			./CSVMerge.pl ../data $TC 2 $M $N 1
 			./FeatureSelection.pl ../data/Down/
-			./CSCRFBuildModel.pl ../data/Down/;;
+			./${ModelType}BuildModel.pl ../data/Down/ $MatrixType;;
 		"Flat")			
 			./CSVMerge.pl ../data $TC 3 $M $N 1
 			./FeatureSelection.pl ../data/Flat/
-			./CSCRFBuildModel.pl ../data/Flat/;;
+			./${ModelType}BuildModel.pl ../data/Flat/ $MatrixType;;
 		"Up&&Down")		
 			./CSVMerge.pl ../data $TC 1 $M $N 1 
 			./CSVMerge.pl ../data $TC 2 $M $N 1
 			./FeatureSelection.pl ../data/Up/
-			./CSCRFBuildModel.pl ../data/Up/
+			./${ModelType}BuildModel.pl ../data/Up/ $MatrixType
 			./FeatureSelection.pl ../data/Down/
-			./CSCRFBuildModel.pl ../data/Down/;;
+			./${ModelType}BuildModel.pl ../data/Down/ $MatrixType;;
 		"Up&&Flat")		
 			./CSVMerge.pl ../data $TC 1 $M $N 1 
 			./CSVMerge.pl ../data $TC 3 $M $N 1
 			./FeatureSelection.pl ../data/Up/
-			./CSCRFBuildModel.pl ../data/Up/
+			./${ModelType}BuildModel.pl ../data/Up/ $MatrixType
 			./FeatureSelection.pl ../data/Flat/
-			./CSCRFBuildModel.pl ../data/Flat/;;
+			./${ModelType}BuildModel.pl ../data/Flat/ $MatrixType;;
 		"Down&&Flat")
 			./CSVMerge.pl ../data $TC 2 $M $N 1
 			./CSVMerge.pl ../data $TC 3 $M $N 1
 			./FeatureSelection.pl ../data/Down/
-			./CSCRFBuildModel.pl ../data/Down/
+			./${ModelType}BuildModel.pl ../data/Down/ $MatrixType
 			./FeatureSelection.pl ../data/Flat/
-			./CSCRFBuildModel.pl ../data/Flat/;;
+			./${ModelType}BuildModel.pl ../data/Flat/ $MatrixType;;
 		"Up&&Down&&Flat")
 			./CSVMerge.pl ../data $TC 1 $M $N 1 
 			./CSVMerge.pl ../data $TC 2 $M $N 1
 			./CSVMerge.pl ../data $TC 3 $M $N 1
 			./FeatureSelection.pl ../data/Up/
-			./CSCRFBuildModel.pl ../data/Up/
+			./${ModelType}BuildModel.pl ../data/Up/ $MatrixType
 			./FeatureSelection.pl ../data/Down/
-			./CSCRFBuildModel.pl ../data/Down/
+			./${ModelType}BuildModel.pl ../data/Down/ $MatrixType
 			./FeatureSelection.pl ../data/Flat/
-			./CSCRFBuildModel.pl ../data/Flat/;;
+			./${ModelType}BuildModel.pl ../data/Flat/ $MatrixType;;
 		"exit")
 			break
 	esac

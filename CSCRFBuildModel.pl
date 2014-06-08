@@ -1,22 +1,40 @@
 #!/usr/bin/perl -w
 
-# 特征值选择，我们假设程序已经在可执行路径中，不做检查 
+# 建立模型
 
 use strict;
 
 my $arglen = @ARGV;
 
-if ($arglen != 1) {
-	printf ("usage: test06.pl InputDir\n");
+if ($arglen != 2) {
+	printf ("usage: test06.pl InputDir MatrixType\n");
 	printf ("InputDir --- 所需输入文件的文件夹地址\n");
+	printf ("MatrixType --- C11 | C12 | C21 | C22,
+	C11进行变化 C12进行变化 C21进行变化 C22进行变化\n");
 	exit;
 }
 
+my $MatrixType = $ARGV[1];
+
 # 设置参数，数组中的参数使用逗号分隔，跟C语言一样
-my @CostMetrix11 = (0);
-my @CostMetrix12 = (2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 100, 150, 200);
-my @CostMetrix21 = (1);
-my @CostMetrix22 = (0);
+my @CostMetrix11 = ();
+my @CostMetrix12 = ();
+my @CostMetrix21 = ();
+my @CostMetrix22 = ();
+if ($MatrixType == "C11") {
+	@CostMetrix11 = (2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 100, 150, 200);
+	@CostMetrix12 = (0);
+	@CostMetrix21 = (1);
+	@CostMetrix22 = (0);
+} elsif ($MatrixType == "C12") {
+	@CostMetrix11 = (0);
+	@CostMetrix12 = (2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 100, 150, 200);
+	@CostMetrix21 = (1);
+	@CostMetrix22 = (0);
+} else {
+	printf ("CSCRFBuildModel 只有C11, C12两种类型\n");
+	exit;
+}
 #my @NumberOfTrees = (10, 50, 100, 150, 200, 250, 300);
 my @NumberOfTrees = (50);
 my @NumberOfFeatures = (0);
@@ -76,5 +94,4 @@ foreach (@txtfile_array) {
 			}
 		}
 	}
-
 }

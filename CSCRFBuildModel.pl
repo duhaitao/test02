@@ -6,15 +6,17 @@ use strict;
 
 my $arglen = @ARGV;
 
-if ($arglen != 2) {
-	printf ("usage: test06.pl InputDir MatrixType\n");
+if ($arglen != 3) {
+	printf ("usage: test06.pl InputDir MatrixType ThreadCount\n");
 	printf ("InputDir --- 所需输入文件的文件夹地址\n");
 	printf ("MatrixType --- C11 | C12 | C21 | C22, \
 	C11进行变化 C12进行变化 C21进行变化 C22进行变化\n");
+	printf ("ThreadCount -- 需要多少线程来计算");
 	exit;
 }
 
 my $MatrixType = $ARGV[1];
+my $ThreadCount = $ARGV[2];
 
 # 设置参数，数组中的参数使用逗号分隔，跟C语言一样
 my @CostMetrix11 = ();
@@ -41,7 +43,7 @@ my @NumberOfTrees = (50);
 my @NumberOfFeatures = (0);
 my @SeedForRandomNumberGenerator = (1);
 my @MaximumDepthOfTrees = (0);
-my @NumberOfExecutionSlots = (4);
+my @NumberOfExecutionSlots = ($ThreadCount);
 
 my $CostMetrix11_len = @CostMetrix11;
 my $CostMetrix12_len = @CostMetrix12;
@@ -82,8 +84,8 @@ foreach (@txtfile_array) {
 							for ($i7 = 0; $i7 < $SeedForRandomNumberGenerator_len; ++$i7) {
 								for ($i8 = 0; $i8 < $MaximumDepthOfTrees_len; ++$i8) {
 									for ($i9 = 0; $i9 < $NumberOfExecutionSlots_len; ++$i9) {
-										$ModelName = "../log/" . $BaseTrainDataFileName . "-$CostMetrix11[$i1]" . "-$CostMetrix12[$i2]" . "-$CostMetrix21[$i3]" . "-$CostMetrix22[$i4]" . "-$NumberOfTrees[$i5]" . "-$NumberOfFeatures[$i6]" . "-$SeedForRandomNumberGenerator[$i7]" . "-$MaximumDepthOfTrees[$i8]" . "-$NumberOfExecutionSlots[$i9]" . ".model";
-										$LogName   = "../log/" . $BaseTrainDataFileName . "-$CostMetrix11[$i1]" . "-$CostMetrix12[$i2]" . "-$CostMetrix21[$i3]" . "-$CostMetrix22[$i4]" . "-$NumberOfTrees[$i5]" . "-$NumberOfFeatures[$i6]" . "-$SeedForRandomNumberGenerator[$i7]" . "-$MaximumDepthOfTrees[$i8]" . "-$NumberOfExecutionSlots[$i9]" . ".log";
+										$ModelName = "../log/" . $BaseTrainDataFileName . "-$CostMetrix11[$i1]" . "-$CostMetrix12[$i2]" . "-$CostMetrix21[$i3]" . "-$CostMetrix22[$i4]" . "-$NumberOfTrees[$i5]" . "-$NumberOfFeatures[$i6]" . "-$SeedForRandomNumberGenerator[$i7]" . "-$MaximumDepthOfTrees[$i8]" . "-$NumberOfExecutionSlots[$i9]" . "-$MatrixType" . ".model";
+										$LogName   = "../log/" . $BaseTrainDataFileName . "-$CostMetrix11[$i1]" . "-$CostMetrix12[$i2]" . "-$CostMetrix21[$i3]" . "-$CostMetrix22[$i4]" . "-$NumberOfTrees[$i5]" . "-$NumberOfFeatures[$i6]" . "-$SeedForRandomNumberGenerator[$i7]" . "-$MaximumDepthOfTrees[$i8]" . "-$NumberOfExecutionSlots[$i9]" . "-$MatrixType" . ".log";
 										printf ("Modeling WekaCSCRFBuildModel $CostMetrix11[$i1] $CostMetrix12[$i2] $CostMetrix21[$i3] $CostMetrix22[$i4] $TrainDataFileName $ModelName $LogName $NumberOfTrees[$i5] $NumberOfFeatures[$i6] $SeedForRandomNumberGenerator[$i7] $MaximumDepthOfTrees[$i8] $NumberOfExecutionSlots[$i9]\n");
 										`./Modeling WekaCSCRFBuildModel $CostMetrix11[$i1] $CostMetrix12[$i2] $CostMetrix21[$i3] $CostMetrix22[$i4] $TrainDataFileName $ModelName $LogName $NumberOfTrees[$i5] $NumberOfFeatures[$i6] $SeedForRandomNumberGenerator[$i7] $MaximumDepthOfTrees[$i8] $NumberOfExecutionSlots[$i9]`;
 									}

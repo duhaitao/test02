@@ -8,7 +8,7 @@ if ($arglen != 6) {
 	printf ("usage: test06.pl InputDir TC TCClass M N K\n");
 	printf ("InputDir --- 所需输入文件的文件夹地址\n");
 	printf ("TC       --- testcase个数\n");
-	printf ("TCClass  --- 测试类型，Up(1) Down(2) Flat(3), 输入时输入数字\n");
+	printf ("TCClass  --- 测试类型，Up Down Flat, 输入时注意大小写\n");
 	printf ("M        --- BuildModel的训练文件包含的天数\n");
 	printf ("N        --- 生成训练文件的起始天数间隔N天\n");
 	printf ("K        --- 模型参数的组数\n");
@@ -30,8 +30,8 @@ if (!-d $InputDir) {
 	exit;
 }
 
-if ($TCClass != 1 && $TCClass != 2 && $TCClass != 3) {
-	printf ("TCClass应该输入数字 Up (1) | Down (2) | Flat (3)\n");
+if ($TCClass ne "Up" && $TCClass ne "Down" && $TCClass ne "Flat") {
+	printf ("TCClass应该输入 Up | Down | Flat \n");
 	exit;
 }
 
@@ -54,16 +54,8 @@ if ($TCClass != 1 && $TCClass != 2 && $TCClass != 3) {
 my $origin_csv_files;
 my @origin_csv_array;
 
-if ($TCClass == 1) {
-	$origin_csv_files = `echo $InputDir/*ClassUp*.csv`;
-	@origin_csv_array = split /\s/, $origin_csv_files;
-} elsif ($TCClass == 2) {
-	$origin_csv_files = `echo $InputDir/*ClassDown*.csv`;
-	@origin_csv_array = split /\s/, $origin_csv_files;
-} elsif ($TCClass == 3) {
-	$origin_csv_files = `echo $InputDir/*ClassFlat*.csv`;
-	@origin_csv_array = split /\s/, $origin_csv_files;
-}
+$origin_csv_files = `echo $InputDir/*Class$TCClass*.csv`;
+@origin_csv_array = split /\s/, $origin_csv_files;
 
 # 按照文件名中的日期排序，而不是文件名称
 my @sorted_origin_csv_array;
@@ -104,13 +96,7 @@ for ($i = 0; $i < $TC; ++$i) {
 
 	$orig_index_begin += $N;
 
-	if ($TCClass == 1) {
-		$outfile = "$InputDir/Up/TestCase$TC-$tmp1-$tmp2-Up.txt";
-	} elsif ($TCClass == 2) {
-		$outfile = "$InputDir/Down/TestCase$TC-$tmp1-$tmp2-Down.txt";
-	} else {
-		$outfile = "$InputDir/Flat/TestCase$TC-$tmp1-$tmp2-Flat.txt";
-	}
+	$outfile = "$InputDir/$TCClass/TestCase$TC-$tmp1-$tmp2-$TCClass.txt";
 
 	# 先检查是否已经存在，如果存在不用再生成
 	#if (-e $outfile && ! -z $outfile) { # 存在并且大于0

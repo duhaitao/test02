@@ -35,10 +35,12 @@ do
 done
 ### 前提条件检查完毕
 
-read -p "输入TestCase个数:" TC
+read -p "输入TestCase个数: " TC
 #echo $TC
-read -p "训练文件包含天数:" M
-read -p "训练文件间隔天数:" N
+read -p "训练文件包含天数: " M
+read -p "训练文件间隔天数: " N
+
+read -p "构造模型时线程数量: " ThreadCount
 
 #while :
 #do
@@ -46,7 +48,7 @@ read -p "训练文件间隔天数:" N
 echo "如果想并行运行测试的话，可以Up|Down|Flat之一，然后再运行此脚本一次，选择其他的"
 
 	echo "请选择测试类型： "
-	select TCClass in "Up" "Down" "Flat" "Up&&Down" "Up&&Flat" "Down&&Flat" "Up&&Down&&Flat" "exit"
+	select TCClass in "Up" "Down" "Flat" "exit"
 	do
 		break;
 	done
@@ -63,51 +65,5 @@ echo "如果想并行运行测试的话，可以Up|Down|Flat之一，然后再�
 		break;
 	done
 
-	case $TCClass in
-		"Up" )			
-			./CSVMerge.pl ../data $TC 1 $M $N 1
-			./FeatureSelection.pl ../data/Up/
-			./${ModelType}BuildModel.pl ../data/Up/ $MatrixType;;
-		"Down")			
-			./CSVMerge.pl ../data $TC 2 $M $N 1
-			./FeatureSelection.pl ../data/Down/
-			./${ModelType}BuildModel.pl ../data/Down/ $MatrixType;;
-		"Flat")			
-			./CSVMerge.pl ../data $TC 3 $M $N 1
-			./FeatureSelection.pl ../data/Flat/
-			./${ModelType}BuildModel.pl ../data/Flat/ $MatrixType;;
-		"Up&&Down")		
-			./CSVMerge.pl ../data $TC 1 $M $N 1 
-			./CSVMerge.pl ../data $TC 2 $M $N 1
-			./FeatureSelection.pl ../data/Up/
-			./${ModelType}BuildModel.pl ../data/Up/ $MatrixType
-			./FeatureSelection.pl ../data/Down/
-			./${ModelType}BuildModel.pl ../data/Down/ $MatrixType;;
-		"Up&&Flat")		
-			./CSVMerge.pl ../data $TC 1 $M $N 1 
-			./CSVMerge.pl ../data $TC 3 $M $N 1
-			./FeatureSelection.pl ../data/Up/
-			./${ModelType}BuildModel.pl ../data/Up/ $MatrixType
-			./FeatureSelection.pl ../data/Flat/
-			./${ModelType}BuildModel.pl ../data/Flat/ $MatrixType;;
-		"Down&&Flat")
-			./CSVMerge.pl ../data $TC 2 $M $N 1
-			./CSVMerge.pl ../data $TC 3 $M $N 1
-			./FeatureSelection.pl ../data/Down/
-			./${ModelType}BuildModel.pl ../data/Down/ $MatrixType
-			./FeatureSelection.pl ../data/Flat/
-			./${ModelType}BuildModel.pl ../data/Flat/ $MatrixType;;
-		"Up&&Down&&Flat")
-			./CSVMerge.pl ../data $TC 1 $M $N 1 
-			./CSVMerge.pl ../data $TC 2 $M $N 1
-			./CSVMerge.pl ../data $TC 3 $M $N 1
-			./FeatureSelection.pl ../data/Up/
-			./${ModelType}BuildModel.pl ../data/Up/ $MatrixType
-			./FeatureSelection.pl ../data/Down/
-			./${ModelType}BuildModel.pl ../data/Down/ $MatrixType
-			./FeatureSelection.pl ../data/Flat/
-			./${ModelType}BuildModel.pl ../data/Flat/ $MatrixType;;
-		"exit")
-			break
-	esac
-#done
+	echo "./CSVMerge.pl ../data $TC $TCClass $M $N 1 && ./FeatureSelection.pl ../data/$TCClass/ && ./${ModelType}BuildModel.pl ../data/$TCClass/ $MatrixType $ThreadCount 将在后台运行"
+	./CSVMerge.pl ../data $TC $TCClass $M $N 1 && ./FeatureSelection.pl ../data/$TCClass/ && ./${ModelType}BuildModel.pl ../data/$TCClass/ $MatrixType $ThreadCount &

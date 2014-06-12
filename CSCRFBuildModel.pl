@@ -61,6 +61,8 @@ my $BaseTrainDataFileName;
 my $ModelName;
 my $LogName;
 
+# 建立模型输出目录
+`mkdir ../log_C11 ../log_C12 ../log_C21 ../log_C22 2>/dev/null`;
 
 my $InputDir = $ARGV[0];
 
@@ -84,8 +86,8 @@ foreach (@txtfile_array) {
 							for ($i7 = 0; $i7 < $SeedForRandomNumberGenerator_len; ++$i7) {
 								for ($i8 = 0; $i8 < $MaximumDepthOfTrees_len; ++$i8) {
 									for ($i9 = 0; $i9 < $NumberOfExecutionSlots_len; ++$i9) {
-										$ModelName = "../log/" . $BaseTrainDataFileName . "-$CostMetrix11[$i1]" . "-$CostMetrix12[$i2]" . "-$CostMetrix21[$i3]" . "-$CostMetrix22[$i4]" . "-$NumberOfTrees[$i5]" . "-$NumberOfFeatures[$i6]" . "-$SeedForRandomNumberGenerator[$i7]" . "-$MaximumDepthOfTrees[$i8]" . "-$NumberOfExecutionSlots[$i9]" . "-$MatrixType" . ".model";
-										$LogName   = "../log/" . $BaseTrainDataFileName . "-$CostMetrix11[$i1]" . "-$CostMetrix12[$i2]" . "-$CostMetrix21[$i3]" . "-$CostMetrix22[$i4]" . "-$NumberOfTrees[$i5]" . "-$NumberOfFeatures[$i6]" . "-$SeedForRandomNumberGenerator[$i7]" . "-$MaximumDepthOfTrees[$i8]" . "-$NumberOfExecutionSlots[$i9]" . "-$MatrixType" . ".log";
+										$ModelName = "../log_$MatrixType/" . $BaseTrainDataFileName . "-$CostMetrix11[$i1]" . "-$CostMetrix12[$i2]" . "-$CostMetrix21[$i3]" . "-$CostMetrix22[$i4]" . "-$NumberOfTrees[$i5]" . "-$NumberOfFeatures[$i6]" . "-$SeedForRandomNumberGenerator[$i7]" . "-$MaximumDepthOfTrees[$i8]" . "-$NumberOfExecutionSlots[$i9]" . "-$MatrixType" . ".model";
+										$LogName   = "../log_$MatrixType/" . $BaseTrainDataFileName . "-$CostMetrix11[$i1]" . "-$CostMetrix12[$i2]" . "-$CostMetrix21[$i3]" . "-$CostMetrix22[$i4]" . "-$NumberOfTrees[$i5]" . "-$NumberOfFeatures[$i6]" . "-$SeedForRandomNumberGenerator[$i7]" . "-$MaximumDepthOfTrees[$i8]" . "-$NumberOfExecutionSlots[$i9]" . "-$MatrixType" . ".log";
 										printf ("Modeling WekaCSCRFBuildModel $CostMetrix11[$i1] $CostMetrix12[$i2] $CostMetrix21[$i3] $CostMetrix22[$i4] $TrainDataFileName $ModelName $LogName $NumberOfTrees[$i5] $NumberOfFeatures[$i6] $SeedForRandomNumberGenerator[$i7] $MaximumDepthOfTrees[$i8] $NumberOfExecutionSlots[$i9]\n");
 										`./Modeling WekaCSCRFBuildModel $CostMetrix11[$i1] $CostMetrix12[$i2] $CostMetrix21[$i3] $CostMetrix22[$i4] $TrainDataFileName $ModelName $LogName $NumberOfTrees[$i5] $NumberOfFeatures[$i6] $SeedForRandomNumberGenerator[$i7] $MaximumDepthOfTrees[$i8] $NumberOfExecutionSlots[$i9]`;
 									}

@@ -18,7 +18,7 @@ my $MatrixType = $ARGV[2];
 my $TestFiles = `echo ../data/TestSet$TCClass/*.arff`;
 my @TestFiles_array = split /\s/, $TestFiles;
 
-my $models = `echo ../log/*$TCClass*$MatrixType.model`;
+my $models = `echo ../log_$MatrixType/*$TCClass*$MatrixType.model`;
 my @models_array = split /\s/, $models;
 
 

@@ -22,20 +22,7 @@ my $models = `echo ../log/*$TCClass*$MatrixType.model`;
 my @models_array = split /\s/, $models;
 
 
-foreach (@models_array) {
-	my $model = $_;
-	foreach (@TestFiles_array) {
-		my $model_basename = `basename $model`;
-		chomp $model_basename;
-		my $LogName = "$_" . "_$model_basename" . ".eva";
-		printf ("./Modeling WekaReevaluate $_ $model $LogName\n");
-		`./Modeling WekaReevaluate $_ $model $LogName`;
-	}
-}
 
-exit;
-
-# MergeEva.pl 完成下面的操作
 
 # Revaluate结束后，需要把每个model对应的100个eva合并为一个文件.
 foreach (@models_array) {

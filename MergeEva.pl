@@ -18,33 +18,38 @@ my $MatrixType = $ARGV[2];
 my $TestFiles = `echo ../data/TestSet$TCClass/*.arff`;
 my @TestFiles_array = split /\s/, $TestFiles;
 
-my $models = `echo ../log/*$TCClass*$MatrixType.model`;
+my $models = `echo ../log_$MatrixType/*$TCClass*.model`;
 my @models_array = split /\s/, $models;
 
 
-
-
+open OUTFILE, ">>log-$MatrixType-$TCClass.eva.sum" || die "create log-$MatrixType-$TCClass.eva.sum error";
+my $count = 1;
 # Revaluate结束后，需要把每个model对应的100个eva合并为一个文件.
 foreach (@models_array) {
 	my $model = $_;
-	open OUTFILE, ">> $model.eva.sum" | die "create $model.eva.sum error";
-	foreach (@TestFiles_array) {
+	printf (OUTFILE "$model");
+	foreach my $txt (@TestFiles_array) {
 		my $model_basename = `basename $model`;
 		chomp $model_basename;
-		my $LogName = "$_" . "_$model_basename" . ".eva";
+		my $LogName = "$txt" . "_$model_basename" . ".eva";
 
+		#printf ("$LogName\n");
 		open FILE, "$LogName" || die "open $LogName error\n";
 		while (<FILE>) {
 			if (/(\d+)\s+(\d+).+a\s+=/) {
-				printf (OUTFILE "$1,$2,");
+				printf (OUTFILE ",$1,$2,");
 				next;
 			}
 			if (/(\d+)\s+(\d+).+b\s+=/) {
-				printf (OUTFILE "$1,$2\n");
+				printf (OUTFILE "$1,$2");
 				next;
 			}
 		}
 		close FILE;
 	}
-	close OUTFILE;
+	printf (OUTFILE "\n");	
+	#if (++$count == 3) {
+	#	exit;
+	#}
 }
+close OUTFILE;

@@ -123,3 +123,5 @@ for ($i = 0; $i < $TC; ++$i) {
 }
 # ===================== 合并测试文件结束 =========================
 
+printf ("CSV已经准备就绪，开始FeatureSelection前准备参数, 如果不需要此步骤可以CTRL+C停止程序\n");
+`./Modeling WekaInfoGain ../data/$TCClass/TestCase-1-100-Up.txt 30 ../data/$TCClass/TestCase-1-100-$TCClass.txt.log`; 

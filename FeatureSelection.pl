@@ -7,22 +7,31 @@ use strict;
 my $arglen = @ARGV;
 
 if ($arglen != 1) {
-	printf ("usage: test06.pl InputDir\n");
-	printf ("InputDir --- 所需输入文件的文件夹地址\n");
+	printf ("usage: test06.pl TCClass\n");
+	printf ("TCClass --- Up | Down | Flat\n");
 	exit;
 }
 
-my $InputDir = $ARGV[0];
+my $TCClass = $ARGV[0];
+my $InputDir = "../data/$ARGV[0]";
 
 # csv文件合并后，生成文件的扩展名是.txt，需要遍历一下，对
 # 每个txt文件进行特征值选择
 
+#printf ("CSV已经准备就绪，开始FeatureSelection前准备参数, 如果不需要此步骤可以CTRL+C停止程序\n");
+#`./Modeling WekaInfoGain ../data/$TCClass/TestCase-1-100-Up.txt 30 ../data/$TCClass/TestCase-1-100-$TCClass.txt.log`; 
+
+
 my $txtfiles = `echo $InputDir/*.txt`;
 my @txtfile_array = split /\s+/, $txtfiles;
 
+my $selectedArgs_tmp =`cat $InputDir/TestCase-1-100-$TCClass.txt.log`;
+chomp ($selectedArgs_tmp);
+my $selectedArgs = "\"" . $selectedArgs_tmp . "\"";
+
 foreach (@txtfile_array) {
-	printf ("Modeling WekaFeatureSelection $_ $_.AFS.arff\n");
-	`./Modeling WekaFeatureSelection $_ $_.AFS.arff`;
+	printf ("Modeling WekaFeatureSelection $_ $selectedArgs $_.AFS.arff\n");
+	`./Modeling WekaFeatureSelection $_ $selectedArgs $_.AFS.arff`;
 	# 清除临时文件
 	my $tmpfiles = `echo /tmp/0.*.tmp`;
 	my @tmpfile_array = split /\s+/, $tmpfiles;

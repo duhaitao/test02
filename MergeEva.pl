@@ -18,12 +18,12 @@ my $MatrixType = $ARGV[2];
 my $TestFiles = `echo ../data/TestSet$TCClass/*.arff`;
 my @TestFiles_array = split /\s/, $TestFiles;
 
+#my $models = `echo ../log_$MatrixType/*$TCClass*$MatrixType.model`;
 my $models = `echo ../log_$MatrixType/*$TCClass*.model`;
 my @models_array = split /\s/, $models;
 
 
 open OUTFILE, ">>log-$MatrixType-$TCClass.eva.sum" || die "create log-$MatrixType-$TCClass.eva.sum error";
-my $count = 1;
 # Revaluate结束后，需要把每个model对应的100个eva合并为一个文件.
 foreach (@models_array) {
 	my $model = $_;
@@ -48,8 +48,5 @@ foreach (@models_array) {
 		close FILE;
 	}
 	printf (OUTFILE "\n");	
-	#if (++$count == 3) {
-	#	exit;
-	#}
 }
 close OUTFILE;
